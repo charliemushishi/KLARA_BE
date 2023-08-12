@@ -54,6 +54,11 @@ def create_emote():
         error_messages = {field: message for field, message in error_list}
         return abort(make_response({"error": error_messages}, 400)) 
 
+    except Exception as e:
+        app.logger.exception(e)
+        return abort(make_response({"error":"NNNOOOOOOPE didnt create new emote"},500))
+
+
 #remove emote
 @emotes_bp.route("/<emote_id>", methods=["DELETE"])
 #@requires_auth  # Apply authentication to this route
