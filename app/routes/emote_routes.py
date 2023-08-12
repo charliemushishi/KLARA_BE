@@ -2,8 +2,12 @@ from flask import Blueprint,request,jsonify,abort,make_response
 from app import db
 from app.models.emotes import Emote
 from app.routes.util import validate_fields, fields_dict, validate_object
+import logging
 #from functools import wraps
 # from app.auth import requires_auth, check_auth
+
+#log configure
+logging.basicConfig(filename='error_log.txt', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 emotes_bp = Blueprint("emotes", __name__, url_prefix="/emotes")
 
@@ -51,7 +55,8 @@ def create_emote():
         return abort(make_response({"error": error_messages}, 400)) 
 
     except Exception as e:
-        return abort(make_response({"exception": e},500))
+        logging.exception("An exception occurred:")
+        return abort(make_response({"error":"NNNOOOOOOPE didnt create new emote"},500))
 
 
 #remove emote
