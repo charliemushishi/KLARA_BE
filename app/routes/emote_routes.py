@@ -51,7 +51,7 @@ def create_emote():
         return abort(make_response({"error": error_messages}, 400)) 
 
     except Exception as e:
-        return abort(make_response({"error":"NNNOOOOOOPE didnt create new emote"},500))
+        return abort(make_response({"exception": e},500))
 
 
 #remove emote
