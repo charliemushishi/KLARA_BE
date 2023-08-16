@@ -2,12 +2,8 @@ from flask import Blueprint,request,jsonify,abort,make_response
 from app import db
 from app.models.emotes import Emote
 from app.routes.util import validate_fields, fields_dict, validate_object
-import logging
 #from functools import wraps
 # from app.auth import requires_auth, check_auth
-
-#log configure
-logging.basicConfig(filename='error_log.txt', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 emotes_bp = Blueprint("emotes", __name__, url_prefix="/emotes")
 
@@ -54,8 +50,8 @@ def create_emote():
         error_messages = {field: message for field, message in error_list}
         return abort(make_response({"error": error_messages}, 400)) 
 
-    except Exception as e:
-        app.logger.exception(e)
+    except Exception as error:
+        print(error)
         return abort(make_response({"error":"NNNOOOOOOPE didnt create new emote"},500))
 
 
@@ -74,6 +70,20 @@ def remove_one_emote(emote_id):
     #     return jsonify({"error": "Incorrect password"}), 401
 
     
+#state for viewport
+current_emote = ""
+
+@emotes_bp.route("/currentemote", methods=["POST"])
+def save_current_emote():
+    request_body = request.get_json()
+    global current_emote
+    current_emote = request_body.get("emote", "")
+    return jsonify({"details": f"Emote {current_emote} saved"}),200
+
+@emotes_bp.route("/currentemote", methods=["GET"])
+def get_current_emote():
+    return jsonify({"emote": current_emote}), 200
+#end of viewport state
 
 
 #update emote

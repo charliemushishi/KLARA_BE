@@ -16,7 +16,7 @@ def create_app():
 
     #Uncomment and configure the appropriate environment variables for your deployment for testing
     #app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("RENDER_EMOTE_URI")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
     #Uncomment and configure the appropriate environment variables for your deployment for Auth
     #password = os.environ.get("DATABASE_PASSWORD")
