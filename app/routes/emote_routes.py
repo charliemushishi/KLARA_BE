@@ -69,16 +69,21 @@ def remove_one_emote(emote_id):
     # else:
     #     return jsonify({"error": "Incorrect password"}), 401
 
-    
-#state for viewport
-current_emote = ""
+
+#state for VIEWPORT
+current_emote = {"title":"","image":"","description":""}
 
 @emotes_bp.route("/currentemote", methods=["POST"])
 def save_current_emote():
     request_body = request.get_json()
     global current_emote
-    current_emote = request_body.get("emote", "")
-    return jsonify({"details": f"Emote {current_emote} saved"}),200
+    current_emote = {
+        "title": request_body.get("title", ""),
+        "image": request_body.get("image", ""),
+        "description": request_body.get("description", "")
+    }
+    return jsonify({"details": f"Current emote saved succesfully, {current_emote}"}),200
+
 
 @emotes_bp.route("/currentemote", methods=["GET"])
 def get_current_emote():
