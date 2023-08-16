@@ -10,13 +10,8 @@ emotes_bp = Blueprint("emotes", __name__, url_prefix="/emotes")
 #all emotes
 @emotes_bp.route("", methods=["GET"])
 def get_all_emotes():
-    #filter id
-    #emote_id = request.args.get("emote_id")  
+
     emote_query = Emote.query
-    
-    #future filter
-    #if emote_id:
-    #    emote_query = emote_query.filter_by(emote_id=emote_id)
 
     emotes = emote_query.all()
 
@@ -154,7 +149,22 @@ def update_emote(emote_id, field):
         return abort(make_response({"error":"NNNOOOOOOPE didnt UPDATE the emote"},500)) 
 
     
+#search function
+@emotes_bp.route("/search", methods=["GET"])
+def search_emotes():
+    search_query = request.args.get("query")
+    
+    if search_query:
+        emote_query = Emote.query.filter(
+            (Emote.title.ilike(f"%{search_query}%")) |
+            (Emote.description.ilike(f"%{search_query}%"))
+        )
+        emotes = emote_query.all()
+    else:
+        emotes = []
 
+    emote_response = [emote.to_dict() for emote in emotes]
+    return jsonify(emote_response)
 
     
 
