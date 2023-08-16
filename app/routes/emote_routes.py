@@ -71,18 +71,46 @@ def remove_one_emote(emote_id):
 
 
 #state for VIEWPORT
-current_emote = {"title":"","image":"","description":""}
+current_emote = {
+    "title":"",
+    "image":"",
+    "description":""
+    }
 
 @emotes_bp.route("/currentemote", methods=["POST"])
 def save_current_emote():
     request_body = request.get_json()
-    global current_emote
-    current_emote = {
-        "title": request_body.get("title", ""),
-        "image": request_body.get("image", ""),
-        "description": request_body.get("description", "")
-    }
-    return jsonify({"details": f"Current emote saved succesfully, {current_emote}"}),200
+
+    try:
+        global current_emote
+        current_emote = {
+            "title": request_body.get("title", ""),
+            "image": request_body.get("image", ""),
+            "description": request_body.get("description", "")
+        }
+
+        response_data = {
+            "details": "Current emote saved successfully",
+            "emote": current_emote
+        }
+        return jsonify(response_data), 200
+
+    except Exception as error:
+        print(error)
+        return abort(make_response({"error": "Failed to save current emote"}, 500))
+
+
+# @emotes_bp.route("/currentemote", methods=["POST"])
+# def save_current_emote():
+#     request_body = request.get_json()
+#     global current_emote
+#     current_emote = {
+#         "title": request_body.get("title", ""),
+#         "image": request_body.get("image", ""),
+#         "description": request_body.get("description", "")
+#     }
+    
+#     return jsonify({"details": f"Current emote saved succesfully, {current_emote}"}),200
 
 
 @emotes_bp.route("/currentemote", methods=["GET"])
